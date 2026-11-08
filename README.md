@@ -1,15 +1,34 @@
-# Jose Berrios — Portfolio
+# Portfolio
 
-A personal portfolio built with **Next.js**, **React**, **TypeScript**, and **Tailwind CSS**.
+A full-stack portfolio built with **Next.js**, **React**, **TypeScript**, and **Tailwind CSS**. Public content is stored in Neon Postgres and edited from a password-protected admin page.
 
-## Getting started
+## Set up
 
-~~~bash
-npm install
-npm run dev
-~~~
+1. Create a [Neon](https://neon.tech) Postgres project.
+2. Copy `.env.example` to `.env.local` and fill in:
+   - `DATABASE_URL`: the connection string from Neon.
+   - `ADMIN_PASSWORD`: a strong password for `/admin`.
+   - `SESSION_SECRET`: a random secret of at least 32 characters. Generate one with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`.
+3. Install dependencies and start the app:
 
-Open http://localhost:3000.
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+Open http://localhost:3000. The database tables and starter content are created automatically on first use.
+
+## Editing content
+
+Visit `/admin` and sign in with `ADMIN_PASSWORD`. You can edit your profile and resume details, add work experience, and create, update, or delete projects. Changes appear on the public site immediately.
+
+For the resume PDF, upload the document to a file host and add its public HTTPS URL in **Profile & resume**. The resume summary, skills, and link are editable there.
+
+The three starter projects are examples, not client case studies. Edit or delete them before publishing real work.
+
+## Deploy to Vercel
+
+Import the repository into Vercel and add `DATABASE_URL`, `ADMIN_PASSWORD`, and `SESSION_SECRET` to the project’s Environment Variables. Use a Neon connection string for `DATABASE_URL`. Redeploy after setting the variables.
 
 ## Scripts
 
@@ -17,14 +36,3 @@ Open http://localhost:3000.
 - `npm run build` — create a production build
 - `npm run start` — run the production server
 - `npm run lint` — run ESLint
-
-## Before launch
-
-- Replace the project capability previews in `app/page.tsx` with real projects, screenshots, and case studies.
-- Add your preferred contact email and professional social links.
-- Expand the About section with verified education and career milestones.
-- Update the skills list to match the technologies you use in production.
-
-## Deploy
-
-Import this repository into Vercel and deploy with the default Next.js settings.

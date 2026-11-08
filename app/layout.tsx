@@ -1,4 +1,4 @@
 import type { Metadata } from "next";
 import "./globals.css";
-export const metadata: Metadata = { title: "Jose Berrios — Full-Stack Engineer", description: "Jose Berrios builds thoughtful web experiences, Shopify commerce, and AI-powered products." };
+export const metadata: Metadata = { title: "Portfolio — Full-Stack Engineer", description: "A portfolio of web development, e-commerce, and product work." };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <html lang="en"><body>{children}</body></html>; }
