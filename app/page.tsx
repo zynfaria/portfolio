@@ -8,6 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { getPortfolioContent } from "@/lib/portfolio-db";
+import { projectCover } from "@/lib/project-cover";
 
 export const dynamic = "force-dynamic";
 
@@ -31,14 +32,6 @@ const services = [
     Icon: Sparkles,
   },
 ];
-
-const projectColors = ["bg-[#dff0c8]", "bg-[#e5e0f3]", "bg-[#f3dfd1]"];
-
-function projectIcon(category: string) {
-  if (/shop|commerce/i.test(category)) return ShoppingBag;
-  if (/ai/i.test(category)) return Sparkles;
-  return Code2;
-}
 
 export default async function Home() {
   const { profile, experiences, projects } = await getPortfolioContent();
@@ -143,19 +136,12 @@ export default async function Home() {
           </div>
           {projects.length > 0 ? (
             <div className="grid gap-5 md:grid-cols-3">
-              {projects.map(({ id, data }, index) => {
-                const Icon = projectIcon(data.category);
+              {projects.map(({ id, data }) => {
                 return (
                   <article key={id} className="project-card overflow-hidden rounded-2xl border border-[var(--line)]">
-                    <div className={`relative flex aspect-[4/3] items-center justify-center ${projectColors[index % projectColors.length]}`}>
-                      {data.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={data.imageUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-36 w-36 items-center justify-center rounded-[2rem] border border-black/15 bg-white/50">
-                          <Icon size={48} strokeWidth={1} />
-                        </div>
-                      )}
+                    <div className="relative aspect-[4/3] overflow-hidden bg-[#e5e0f3]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={data.imageUrl || projectCover(data.category)} alt="" className="absolute inset-0 h-full w-full object-cover" />
                     </div>
                     <div className="p-6">
                       <p className="eyebrow muted mb-4">{data.category || "PROJECT"}</p>

@@ -17,6 +17,7 @@ import type {
   Profile,
   Project,
 } from "@/lib/portfolio-types";
+import { projectCover } from "@/lib/project-cover";
 
 type Section = "profile" | "experience" | "projects";
 type EditorState =
@@ -188,7 +189,16 @@ function ProjectForm({
         <Field label="Description" value={form.description} onChange={(v) => update("description", v)} multiline />
       </div>
       <Field label="Tags (comma separated)" value={form.tagsText} onChange={(v) => update("tagsText", v)} placeholder="Next.js, TypeScript" />
-      <Field label="Image URL" value={form.imageUrl} onChange={(v) => update("imageUrl", v)} placeholder="https://…" type="url" />
+      <div>
+        <Field label="Image URL" value={form.imageUrl} onChange={(v) => update("imageUrl", v)} placeholder="https://…" type="url" />
+        <p className="mt-2 text-xs text-[#70736d]">A custom image replaces the elegant category artwork.</p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={form.imageUrl || projectCover(form.category)}
+          alt=""
+          className="mt-3 aspect-[4/3] w-full rounded-xl border border-[#dedfd8] object-cover"
+        />
+      </div>
       <Field label="Live project URL" value={form.projectUrl} onChange={(v) => update("projectUrl", v)} placeholder="https://…" type="url" />
       <Field label="Source code URL" value={form.sourceUrl} onChange={(v) => update("sourceUrl", v)} placeholder="https://…" type="url" />
       <div className="flex justify-end gap-3 sm:col-span-2">
