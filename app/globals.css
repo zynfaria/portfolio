@@ -51,6 +51,76 @@ body::before {
   mask-image: linear-gradient(to bottom, black, transparent 78%);
 }
 
+.background-lines {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.62;
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 76%, transparent);
+}
+
+.meteor {
+  --flight-x: 300px;
+  --flight-y: 240px;
+  opacity: 0;
+  animation: meteor-flight 8s linear infinite;
+}
+
+.meteor-down-left {
+  --flight-x: -300px;
+}
+
+.meteor-up-right {
+  --flight-y: -240px;
+}
+
+.meteor-up-left {
+  --flight-x: -300px;
+  --flight-y: -240px;
+}
+
+.meteor:nth-of-type(2) {
+  animation-delay: -2.7s;
+  animation-duration: 11s;
+}
+
+.meteor:nth-of-type(3) {
+  animation-delay: -6.1s;
+  animation-duration: 9s;
+}
+
+.meteor:nth-of-type(4) {
+  animation-delay: -4.4s;
+  animation-duration: 13s;
+}
+
+.meteor:nth-of-type(5) {
+  animation-delay: -1.2s;
+  animation-duration: 10s;
+}
+
+.meteor:nth-of-type(6) {
+  animation-delay: -7.8s;
+  animation-duration: 12s;
+}
+
+.meteor-trail {
+  fill: none;
+  stroke: url(#meteor-trail);
+  stroke-linecap: round;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.meteor-core {
+  fill: #fffef4;
+  filter: url(#meteor-glow);
+}
+
 ::selection {
   background: var(--accent);
   color: #171816;
@@ -214,6 +284,10 @@ a:focus-visible {
     will-change: auto;
   }
 
+  .meteor {
+    animation: none;
+  }
+
   *,
   *::before,
   *::after {
@@ -233,5 +307,25 @@ a:focus-visible {
 
   100% {
     transform: translate3d(-0.5%, 1.5%, 0) scale(1.02);
+  }
+}
+
+@keyframes meteor-flight {
+  0% {
+    translate: 0 0;
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 0.9;
+  }
+
+  58% {
+    opacity: 0.55;
+  }
+
+  100% {
+    translate: var(--flight-x) var(--flight-y);
+    opacity: 0;
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { upload } from "@vercel/blob/client";
 import {
   BriefcaseBusiness,
   FileText,
@@ -9,6 +10,7 @@ import {
   Plus,
   Save,
   Trash2,
+  Upload,
   X,
 } from "lucide-react";
 import type {
@@ -212,6 +214,7 @@ function ProjectForm({
 }
 
 export default function AdminEditor() {
+  const resumeFileInput = useRef<HTMLInputElement>(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [checking, setChecking] = useState(true);
   const [content, setContent] = useState<PortfolioContent | null>(null);
@@ -221,6 +224,7 @@ export default function AdminEditor() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [saving, setSaving] = useState(false);
+  const [uploadingResume, setUploadingResume] = useState(false);
 
   async function loadContent() {
     const data = await apiRequest<PortfolioContent>("/api/admin/content");
@@ -289,6 +293,52 @@ export default function AdminEditor() {
       setError(cause instanceof Error ? cause.message : "Unable to save profile.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function replaceResume(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.currentTarget.files?.[0];
+    event.currentTarget.value = "";
+    if (!file) return;
+
+    if (!file.name.toLowerCase().endsWith(".pdf") || file.type !== "application/pdf") {
+      setError("Choose a PDF file.");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError("The resume PDF must be 10 MB or smaller.");
+      return;
+    }
+    if ((await file.slice(0, 5).text()) !== "%PDF-") {
+      setError("The selected file is not a valid PDF.");
+      return;
+    }
+
+    setUploadingResume(true);
+    setError("");
+    setNotice("");
+    try {
+      const blob = await upload(`resumes/${crypto.randomUUID()}.pdf`, file, {
+        access: "public",
+        handleUploadUrl: "/api/admin/resume",
+      });
+      await apiRequest("/api/admin/resume", {
+        method: "PATCH",
+        body: JSON.stringify({ url: blob.url }),
+      });
+      setContent((current) =>
+        current
+          ? {
+              ...current,
+              profile: { ...current.profile, resumeUrl: blob.url },
+            }
+          : current,
+      );
+      setNotice("Resume PDF replaced.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to replace resume PDF.");
+    } finally {
+      setUploadingResume(false);
     }
   }
 
@@ -458,8 +508,40 @@ export default function AdminEditor() {
                 <Field label="Contact email" value={content.profile.email} onChange={(v) => setContent({ ...content, profile: { ...content.profile, email: v } })} type="email" />
                 <Field label="GitHub URL" value={content.profile.githubUrl} onChange={(v) => setContent({ ...content, profile: { ...content.profile, githubUrl: v } })} type="url" />
                 <div className="sm:col-span-2">
-                  <Field label="Resume PDF URL" value={content.profile.resumeUrl} onChange={(v) => setContent({ ...content, profile: { ...content.profile, resumeUrl: v } })} placeholder="Add a link to your hosted PDF" type="url" />
-                  <p className="mt-2 text-xs text-[#70736d]">Upload your PDF to a file host and paste its public link here.</p>
+                  <div className="text-sm">
+                    <span className="font-medium">Resume PDF</span>
+                    <div className="mt-2 flex flex-wrap items-center gap-3">
+                      {content.profile.resumeUrl ? (
+                        <a
+                          href={content.profile.resumeUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="min-w-0 flex-1 break-all text-[#70736d] underline"
+                        >
+                          View current resume PDF
+                        </a>
+                      ) : (
+                        <span className="min-w-0 flex-1 text-[#70736d]">No resume PDF uploaded.</span>
+                      )}
+                      <input
+                        ref={resumeFileInput}
+                        type="file"
+                        accept="application/pdf,.pdf"
+                        onChange={replaceResume}
+                        className="sr-only"
+                        aria-label="Choose a replacement resume PDF"
+                      />
+                      <button
+                        type="button"
+                        disabled={uploadingResume || saving}
+                        onClick={() => resumeFileInput.current?.click()}
+                        className="inline-flex items-center gap-2 rounded-full border border-[#dedfd8] px-4 py-2 text-sm font-medium hover:bg-[#f5f5f1] disabled:opacity-50"
+                      >
+                        <Upload size={14} /> {uploadingResume ? "Uploading…" : content.profile.resumeUrl ? "Replace PDF" : "Upload PDF"}
+                      </button>
+                    </div>
+                  </div>
+                  <p className="mt-2 text-xs text-[#70736d]">Upload a PDF up to 10 MB. The public resume link updates when the upload finishes.</p>
                 </div>
                 <div className="sm:col-span-2">
                   <Field label="Resume summary" value={content.profile.resumeSummary} onChange={(v) => setContent({ ...content, profile: { ...content.profile, resumeSummary: v } })} multiline placeholder="A short overview for the resume section" />
@@ -468,7 +550,7 @@ export default function AdminEditor() {
                   <Field label="Skills (one per line)" value={skillsText} onChange={setSkillsText} multiline placeholder={"Frontend: React · TypeScript\nBackend: APIs · Databases"} />
                 </div>
                 <div className="flex justify-end sm:col-span-2">
-                  <button disabled={saving} className="inline-flex items-center gap-2 rounded-full bg-[#171816] px-5 py-3 text-sm font-medium text-white disabled:opacity-50">
+                  <button disabled={saving || uploadingResume} className="inline-flex items-center gap-2 rounded-full bg-[#171816] px-5 py-3 text-sm font-medium text-white disabled:opacity-50">
                     <Save size={15} /> {saving ? "Saving…" : "Save profile"}
                   </button>
                 </div>
