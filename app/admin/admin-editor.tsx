@@ -19,7 +19,7 @@ import type {
   Profile,
   Project,
 } from "@/lib/portfolio-types";
-import { projectCover } from "@/lib/project-cover";
+import ProjectImageSlider from "@/components/project-image-slider";
 
 type Section = "profile" | "experience" | "projects";
 type EditorState =
@@ -40,6 +40,7 @@ const emptyProject: Project = {
   category: "",
   description: "",
   tags: [],
+  imageUrls: [],
   imageUrl: "",
   projectUrl: "",
   sourceUrl: "",
@@ -165,9 +166,22 @@ function ProjectForm({
   onCancel: () => void;
   saving: boolean;
 }) {
-  const [form, setForm] = useState({ ...initial, tagsText: initial.tags.join(", ") });
-  const update = (key: keyof Project | "tagsText", value: string) =>
+  const [form, setForm] = useState({
+    ...initial,
+    imageUrlsText: (initial.imageUrls?.length
+      ? initial.imageUrls
+      : initial.imageUrl
+        ? [initial.imageUrl]
+        : []
+    ).join("\n"),
+    tagsText: initial.tags.join(", "),
+  });
+  const update = (key: keyof Project | "tagsText" | "imageUrlsText", value: string) =>
     setForm((current) => ({ ...current, [key]: value }));
+  const imageUrls = form.imageUrlsText
+    .split("\n")
+    .map((url) => url.trim())
+    .filter(Boolean);
 
   return (
     <form
@@ -179,7 +193,8 @@ function ProjectForm({
           category: form.category,
           description: form.description,
           tags: form.tagsText.split(",").map((tag) => tag.trim()).filter(Boolean),
-          imageUrl: form.imageUrl,
+          imageUrls,
+          imageUrl: imageUrls[0] ?? "",
           projectUrl: form.projectUrl,
           sourceUrl: form.sourceUrl,
         });
@@ -191,15 +206,18 @@ function ProjectForm({
         <Field label="Description" value={form.description} onChange={(v) => update("description", v)} multiline />
       </div>
       <Field label="Tags (comma separated)" value={form.tagsText} onChange={(v) => update("tagsText", v)} placeholder="Next.js, TypeScript" />
-      <div>
-        <Field label="Image URL" value={form.imageUrl} onChange={(v) => update("imageUrl", v)} placeholder="https://…" type="url" />
-        <p className="mt-2 text-xs text-[#70736d]">A custom image replaces the elegant category artwork.</p>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={form.imageUrl || projectCover(form.category)}
-          alt=""
-          className="mt-3 aspect-[4/3] w-full rounded-xl border border-[#dedfd8] object-cover"
+      <div className="sm:col-span-2">
+        <Field
+          label="Image URLs (one per line)"
+          value={form.imageUrlsText}
+          onChange={(v) => update("imageUrlsText", v)}
+          placeholder={"https://example.com/image-1.jpg\nhttps://example.com/image-2.jpg"}
+          multiline
         />
+        <p className="mt-2 text-xs text-[#70736d]">Add up to 10 image URLs, one per line. Multiple images appear as a slideshow.</p>
+        <div className="mt-3 aspect-[4/3] overflow-hidden rounded-xl border border-[#dedfd8]">
+          <ProjectImageSlider images={imageUrls} category={form.category} label={`${form.title || "Project"} preview`} />
+        </div>
       </div>
       <Field label="Live project URL" value={form.projectUrl} onChange={(v) => update("projectUrl", v)} placeholder="https://…" type="url" />
       <Field label="Source code URL" value={form.sourceUrl} onChange={(v) => update("sourceUrl", v)} placeholder="https://…" type="url" />

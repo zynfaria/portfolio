@@ -115,22 +115,42 @@ function parseProject(value: unknown): Project | null {
   const category = boundedText(value.category, 120);
   const description = boundedText(value.description, 3000);
   const tags = stringList(value.tags);
-  const imageUrl = validUrl(value.imageUrl);
+  const imageUrls =
+    value.imageUrls === undefined
+      ? [validUrl(value.imageUrl)]
+      : Array.isArray(value.imageUrls) && value.imageUrls.length <= 10
+        ? value.imageUrls.map((url) => validUrl(url))
+        : null;
   const projectUrl = validUrl(value.projectUrl);
   const sourceUrl = validUrl(value.sourceUrl);
+  if (
+    imageUrls === null ||
+    imageUrls.some((url) => url === null)
+  ) {
+    return null;
+  }
+  const normalizedImageUrls = imageUrls.filter((url): url is string => url !== "");
   if (
     title === null ||
     category === null ||
     description === null ||
     tags === null ||
-    imageUrl === null ||
     projectUrl === null ||
     sourceUrl === null ||
     !title
   ) {
     return null;
   }
-  return { title, category, description, tags, imageUrl, projectUrl, sourceUrl };
+  return {
+    title,
+    category,
+    description,
+    tags,
+    imageUrls: normalizedImageUrls,
+    imageUrl: normalizedImageUrls[0] ?? "",
+    projectUrl,
+    sourceUrl,
+  };
 }
 
 function parseKind(value: unknown): Kind | null {

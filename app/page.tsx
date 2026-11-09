@@ -8,7 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { getPortfolioContent } from "@/lib/portfolio-db";
-import { projectCover } from "@/lib/project-cover";
+import ProjectImageSlider from "@/components/project-image-slider";
 
 export const dynamic = "force-dynamic";
 
@@ -140,8 +140,11 @@ export default async function Home() {
                 return (
                   <article key={id} className="project-card overflow-hidden rounded-2xl border border-[var(--line)]">
                     <div className="relative aspect-[4/3] overflow-hidden bg-[#e5e0f3]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={data.imageUrl || projectCover(data.category)} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                      <ProjectImageSlider
+                        images={data.imageUrls?.length ? data.imageUrls : data.imageUrl ? [data.imageUrl] : []}
+                        category={data.category}
+                        label={`${data.title} preview`}
+                      />
                     </div>
                     <div className="p-6">
                       <p className="eyebrow muted mb-4">{data.category || "PROJECT"}</p>

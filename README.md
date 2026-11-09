@@ -23,6 +23,8 @@ Open http://localhost:3000. The database tables and starter content are created 
 
 Visit `/admin` and sign in with `ADMIN_PASSWORD`. You can edit your profile and resume details, add work experience, and create, update, or delete projects. Changes appear on the public site immediately.
 
+Project image URLs can be entered one per line in the project editor. Multiple images display as a slideshow on the portfolio.
+
 In **Profile & resume**, choose **Upload PDF** or **Replace PDF** to upload a public resume PDF to Vercel Blob. Create a Blob store connected to the project and configure `BLOB_READ_WRITE_TOKEN`. PDFs must be 10 MB or smaller. The resume link updates after the upload completes.
 
 The three starter projects are examples, not client case studies. Edit or delete them before publishing real work.
