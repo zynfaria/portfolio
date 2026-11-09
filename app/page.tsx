@@ -57,7 +57,7 @@ export default async function Home() {
       <section id="home" className="container hero-surface pb-28 pt-20 md:pb-36 md:pt-28">
         <div className="mb-9 flex items-center gap-3">
           <span className="h-2 w-2 rounded-full bg-[#91c94b]" />
-          <p className="eyebrow muted">{profile.role} · Open to opportunities</p>
+          <p className="eyebrow muted">{profile.role} <span aria-hidden="true">/</span> Product-minded engineering</p>
         </div>
         <h1 className="display max-w-[1050px]">{profile.headline}</h1>
         <div className="mt-12 flex flex-col justify-between gap-9 md:flex-row md:items-end">
@@ -169,7 +169,6 @@ export default async function Home() {
           ) : (
             <p className="border-y border-[var(--line)] py-8 text-sm muted">Projects are on the way. Check back soon.</p>
           )}
-          <p className="mt-5 text-xs muted">Starter examples are placeholders. Replace them with real projects and outcomes in the admin area.</p>
         </div>
       </section>
 
