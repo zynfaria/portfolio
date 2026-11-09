@@ -44,7 +44,7 @@ export default async function Home() {
     <main id="home">
       <header className="site-header container">
         <a href="#home" className="brand-mark" aria-label={profile.name}>
-          {profile.name.split(/\\s+/).map((part) => part[0]).join("")}<span>.</span>
+          {profile.name.split(/\s+/).map((part) => part[0]).join("")}<span>.</span>
         </a>
         <nav className="main-nav" aria-label="Main navigation">
           <a href="#work">Work</a>
@@ -68,7 +68,7 @@ export default async function Home() {
         <div className="hero-board" aria-label="Areas of engineering">
           <article className="board-card board-profile">
             <div className="card-topline"><span>01 / THE CRAFT</span><Code2 size={15} /></div>
-            <div className="profile-monogram">{profile.name.split(/\\s+/).map((part) => part[0]).join("").slice(0, 2)}</div>
+            <div className="profile-monogram">{profile.name.split(/\s+/).map((part) => part[0]).join("").slice(0, 2)}</div>
             <h2>Made with intent.</h2>
             <p>Thoughtful digital products, from the first sketch to production.</p>
             <span className="card-index">DESIGN × ENGINEERING</span>
