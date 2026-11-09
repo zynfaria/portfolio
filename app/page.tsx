@@ -43,22 +43,15 @@ export default async function Home() {
   return (
     <main id="home">
       <header className="site-header container">
-        <a href="#home" className="brand-mark" aria-label={profile.name}>
-          {profile.name.split(/\s+/).map((part) => part[0]).join("")}<span>.</span>
-        </a>
-        <nav className="main-nav" aria-label="Main navigation">
-          <a href="#work">Work</a>
-          <a href="#approach">Approach</a>
-          {experiences.length > 0 && <a href="#experience">Experience</a>}
-          <a href="#about">About</a>
-        </nav>
-        <a href="#contact" className="header-cta">Let’s talk <MoveUpRight size={14} /></a>
+        <a href="#home" className="brand-mark" aria-label={profile.name}>{profile.name}</a>
+        <span className="header-note">INDEPENDENT DIGITAL ENGINEERING</span>
+        <a href="#contact" className="header-cta">LET’S TALK <MoveUpRight size={13} /></a>
       </header>
 
       <section className="hero container">
         <div className="hero-intro">
-          <span className="eyebrow"><i /> INDEPENDENT SOFTWARE ENGINEER</span>
-          <p className="hero-kicker">Digital craft / Product thinking / Engineering</p>
+          <span className="eyebrow"><i /> AVAILABLE FOR SELECT PROJECTS</span>
+          <p className="hero-kicker">FULL-STACK / SHOPIFY / INTELLIGENT SYSTEMS</p>
         </div>
         <h1 className="hero-name">{profile.name}</h1>
         <p className="hero-manifesto">Building <em>useful things</em> for the digital world.</p>
