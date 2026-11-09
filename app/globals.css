@@ -346,3 +346,57 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   .clock-second { animation: none !important; }
 }
+
+
+/* Final showcase pass: treat project captures like floating product previews. */
+.project-card {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border: 1px solid #211d29;
+  background: linear-gradient(145deg, #0c0b10, #050507 72%);
+  box-shadow: 0 28px 90px #000b, 0 0 45px #8a55ff0a;
+}
+.project-card::before {
+  position: absolute;
+  z-index: -1;
+  inset: 12% 8%;
+  border-radius: inherit;
+  background: #8b55ff;
+  content: "";
+  opacity: .12;
+  filter: blur(55px);
+  transition: opacity .35s ease;
+}
+.project-card:hover::before { opacity: .25; }
+.project-media {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 50% 55%, #34234a55, transparent 68%),
+    linear-gradient(145deg, #0d0c12, #070709);
+}
+.project-media img {
+  object-fit: contain !important;
+  padding: 16px;
+  filter: drop-shadow(0 18px 24px #000b);
+  transition: transform .65s cubic-bezier(.2,.7,.2,1), filter .65s ease;
+}
+.project-card:hover .project-media img {
+  transform: scale(1.045) translateY(-3px);
+  filter: drop-shadow(0 25px 30px #000d) drop-shadow(0 0 18px #8b55ff22);
+}
+.project-card-0 .project-media img { padding: 22px; }
+.project-card-1 { transform: translateY(12px); }
+.project-card-2 { transform: translateY(-8px); }
+.project-card-1:hover, .project-card-2:hover { transform: translateY(-3px); }
+.project-copy { background: linear-gradient(180deg, #0b0a0f, #08080b); }
+.project-number {
+  border-color: #ffffff25;
+  background: #08070bd9;
+  box-shadow: 0 0 20px #8b55ff1c;
+}
+@media (max-width: 760px) {
+  .project-card-1, .project-card-2 { transform: none; }
+  .project-media img { padding: 12px; }
+}
