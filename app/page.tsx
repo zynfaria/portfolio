@@ -178,12 +178,30 @@ export default async function Home() {
 
       <section className="section tools-section">
         <div className="container">
-          <div className="section-title centered-title">
-            <p className="eyebrow">THE TOOLKIT / 03</p>
-            <h2>The magic <em>behind.</em></h2>
+          <div className="section-title centered-title skillset-heading">
+            <p className="eyebrow">MY SKILLSET</p>
+            <h2>The Magic <em>Behind</em></h2>
           </div>
           <div className="skill-cloud">
-            {profile.skills.map((skill) => <span key={skill}>{skill}</span>)}
+            {profile.skills.map((skill, index) => {
+              const marks: Record<string, string> = {
+                React: "✿", "Next.js": "▲", TypeScript: "TS", JavaScript: "JS",
+                "Tailwind CSS": "⌁", "Framer Motion": "✧", GSAP: "GS",
+                Redux: "◉", "Context API": "Ctx", "Node.js": "⬡", "Express.js": "Ex",
+                FastAPI: "ϟ", "Spring Boot": "✣", Python: "Py", "OpenAI API": "✳",
+                "Machine Learning": "◉", "Prompt Engineering": "✦", MongoDB: "◈",
+                MySQL: "◆", Firebase: "♨", JWT: "▣", OAuth: "↗",
+                "Firebase Auth": "⚿", Git: "⑂", GitHub: "◐", Postman: "◉",
+                "VS Code": "▤", Vercel: "▲", Netlify: "◒", Render: "◍",
+                Railway: "▣", Docker: "◉",
+              };
+              return (
+                <span className="skill-chip" data-tone={index % 7} key={skill}>
+                  <i aria-hidden="true">{marks[skill] || skill.slice(0, 2).toUpperCase()}</i>
+                  {skill}
+                </span>
+              );
+            })}
           </div>
         </div>
       </section>
