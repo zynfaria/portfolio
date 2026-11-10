@@ -2,6 +2,7 @@ import {
   ArrowDown,
   ArrowUpRight,
   Code2,
+  Download,
   Github,
   MoveUpRight,
   ShoppingBag,
