@@ -10,7 +10,8 @@ import {
   Workflow,
 } from "lucide-react";
 import { getPortfolioContent } from "@/lib/portfolio-db";
-import ProjectImageSlider from "@/components/project-image-slider";
+import { projectCover } from "@/lib/project-cover";
+import ProjectPreview from "@/components/project-preview";
 
 export const dynamic = "force-dynamic";
 
@@ -120,31 +121,42 @@ export default async function Home() {
             <p>A selection of products, platforms, and experiments.</p>
           </div>
           {projects.length > 0 ? (
-            <div className="project-grid">
-              {projects.map(({ id, data }, index) => (
-                <article key={id} className={`project-card project-card-${index % 3}`}>
-                  <div className="project-media">
-                    <ProjectImageSlider
-                      images={data.imageUrls?.length ? data.imageUrls : data.imageUrl ? [data.imageUrl] : []}
-                      category={data.category}
-                      label={`${data.title} preview`}
-                    />
-                    <span className="project-number">0{index + 1}</span>
-                  </div>
-                  <div className="project-copy">
-                    <div className="project-meta"><span>{data.category || "PROJECT"}</span><span>{data.tags.slice(0, 2).join(" / ")}</span></div>
-                    <h3>{data.title}</h3>
-                    <p>{data.description}</p>
-                    <div className="project-bottom">
-                      <div className="tag-list">{data.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                      <div className="project-links">
-                        {data.projectUrl && <a href={data.projectUrl} target="_blank" rel="noreferrer" aria-label={`Visit ${data.title}`}><ArrowUpRight size={17} /></a>}
-                        {data.sourceUrl && <a href={data.sourceUrl} target="_blank" rel="noreferrer" aria-label={`View source for ${data.title}`}><Github size={16} /></a>}
+            <div className="project-showcase">
+              {projects.map(({ id, data }, index) => {
+                const desktopImage =
+                  data.imageUrls?.[0] || data.imageUrl || projectCover(data.category);
+                const mobileImage = data.imageUrls?.[1] || desktopImage;
+
+                return (
+                  <article className="showcase-project" key={id}>
+                    <div className="showcase-project-copy">
+                      <p className="showcase-project-index">
+                        <span>{data.category || "Selected project"}</span>
+                        <span>{String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</span>
+                      </p>
+                      <h3>{data.title}</h3>
+                      <p className="showcase-project-summary">{data.description}</p>
+                      <div className="showcase-project-skills">
+                        <span className="showcase-project-label">Built with</span>
+                        <div className="tag-list">
+                          {data.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                        </div>
+                      </div>
+                      <div className="showcase-project-links">
+                        {data.projectUrl && <a href={data.projectUrl} target="_blank" rel="noreferrer">View project <ArrowUpRight size={16} /></a>}
+                        {data.sourceUrl && <a href={data.sourceUrl} target="_blank" rel="noreferrer" aria-label={`View source for ${data.title}`}><Github size={17} /></a>}
                       </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+
+                    <ProjectPreview
+                      title={data.title}
+                      desktopImage={desktopImage}
+                      mobileImage={mobileImage}
+                      projectUrl={data.projectUrl}
+                    />
+                  </article>
+                );
+              })}
             </div>
           ) : (
             <p className="empty-projects">Projects will appear here as they are added in the portfolio dashboard.</p>
