@@ -75,8 +75,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--purple); outlin
 .clock-face { position: relative; width: 132px; height: 132px; border: 1px solid #514b58; border-radius: 50%; background: repeating-conic-gradient(from 0deg, #8d8498 0deg 1deg, transparent 1deg 30deg); }
 .clock-face::before { position: absolute; inset: 7px; border-radius: 50%; background: #111116; content: ""; }
 .clock-face i { position: absolute; z-index: 1; bottom: 50%; left: 50%; display: block; width: 2px; border-radius: 4px; transform-origin: bottom; }
-.clock-hour { height: 34px; background: #e8e2ed; transform: translateX(-50%) rotate(38deg); }
-.clock-minute { height: 49px; background: #c4b4f6; transform: translateX(-50%) rotate(145deg); }
+.clock-hour { height: 34px; background: #f7efff; box-shadow: 0 0 12px #e8caff, 0 0 26px #b879ff99; transform: translateX(-50%) rotate(38deg); }
+.clock-minute { height: 49px; background: #d7c2ff; box-shadow: 0 0 12px #c4a0ff, 0 0 28px #8758ffbb; transform: translateX(-50%) rotate(145deg); }
 .clock-second { height: 53px; width: 1px !important; background: var(--pink); transform: translateX(-50%) rotate(230deg); }
 .clock-face b { position: absolute; z-index: 2; top: 50%; left: 50%; width: 6px; height: 6px; border-radius: 50%; background: white; transform: translate(-50%, -50%); }
 .clock-card > span { margin-top: 8px; color: #77717f; font-size: 9px; letter-spacing: .16em; }
@@ -885,7 +885,7 @@ body::before {
   box-shadow: 0 0 0 14px #050507, 0 24px 90px #000, 0 0 80px #8758ff24;
 }
 .clock-face { width: 392px; height: 392px; }
-.clock-face::before { inset: 20px; }
+.clock-face::before { inset: 8px; }
 .clock-hour { height: 104px; width: 6px; }
 .clock-minute { height: 144px; width: 6px; }
 .clock-second { height: 156px; width: 4px !important; }
@@ -893,7 +893,7 @@ body::before {
 @media (max-width: 760px) {
   .clock-card { top: 50%; width: 280px; height: 280px; }
   .clock-face { width: 204px; height: 204px; }
-  .clock-face::before { inset: 12px; }
+  .clock-face::before { inset: 6px; }
   .clock-hour { height: 54px; width: 4px; }
   .clock-minute { height: 76px; width: 4px; }
   .clock-second { height: 84px; width: 2px !important; }
