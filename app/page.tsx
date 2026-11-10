@@ -64,7 +64,7 @@ export default async function Home() {
         <p className="hero-manifesto">Building <em>useful things</em> for the digital world.</p>
         <p className="hero-summary">{profile.intro}</p>
         <div className="hero-actions" aria-label="Profile actions">
-          {profile.resumeUrl && <a className="action-button action-button-primary" href="/api/resume" download>Download resume <ArrowDown size={15} /></a>}
+          {profile.resumeUrl ? <a className="action-button action-button-primary" href="/api/resume" download>Download resume <ArrowDown size={15} /></a> : <span className="action-button action-button-disabled" aria-disabled="true">Resume not uploaded yet</span>}
           {profile.githubUrl && <a className="action-button action-button-secondary" href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
         </div>
         <a className="scroll-cue" href="#work"><span>SCROLL TO EXPLORE</span><ArrowDown size={14} /></a>
