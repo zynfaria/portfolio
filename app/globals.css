@@ -490,3 +490,29 @@ body::before {
   .skill-cloud .skill-chip { min-height: 38px; padding: 6px 12px 6px 8px; font-size: 11px; }
   .skill-chip i { width: 21px; height: 21px; flex-basis: 21px; }
 }
+
+
+/* Make the resume action unmistakable in the About section. */
+.about-links { align-items: center; flex-wrap: wrap; gap: 14px; }
+.about-links .download-resume {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 0 19px;
+  border: 1px solid #a86aff88;
+  border-radius: 999px;
+  background: linear-gradient(105deg, #8c4bdf, #d64e9b);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .025em;
+  box-shadow: 0 8px 28px #9a4de52b, inset 0 1px 0 #ffffff30;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.about-links .download-resume:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+  box-shadow: 0 12px 34px #a64de54a, inset 0 1px 0 #ffffff45;
+}
