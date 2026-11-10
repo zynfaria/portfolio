@@ -885,17 +885,17 @@ body::before {
   box-shadow: 0 0 0 14px #050507, 0 24px 90px #000, 0 0 80px #8758ff24;
 }
 .clock-face { width: 392px; height: 392px; }
-.clock-face::before { inset: 8px; }
-.clock-hour { height: 104px; width: 6px; }
-.clock-minute { height: 144px; width: 6px; }
+.clock-face::before { inset: 20px; }
+.clock-hour { height: 104px; width: 18px; }
+.clock-minute { height: 144px; width: 12px; }
 .clock-second { height: 156px; width: 4px !important; }
 .clock-face b { width: 18px; height: 18px; }
 @media (max-width: 760px) {
   .clock-card { top: 50%; width: 280px; height: 280px; }
   .clock-face { width: 204px; height: 204px; }
-  .clock-face::before { inset: 6px; }
-  .clock-hour { height: 54px; width: 4px; }
-  .clock-minute { height: 76px; width: 4px; }
+  .clock-face::before { inset: 12px; }
+  .clock-hour { height: 54px; width: 8px; }
+  .clock-minute { height: 76px; width: 8px; }
   .clock-second { height: 84px; width: 2px !important; }
   .clock-face b { width: 14px; height: 14px; }
 }
