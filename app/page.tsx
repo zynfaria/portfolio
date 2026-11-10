@@ -234,7 +234,7 @@ export default async function Home() {
             <p className="about-intro">{profile.about || profile.intro}</p>
             {profile.resumeSummary && <p>{profile.resumeSummary}</p>}
             <div className="about-links">
-              {profile.resumeUrl && <a className="action-button action-button-primary" href="/api/resume" download>Download resume <ArrowDown size={15} /></a>}
+              {profile.resumeUrl ? <a className="action-button action-button-primary" href="/api/resume" download>Download resume <ArrowDown size={15} /></a> : <span className="action-button action-button-disabled" aria-disabled="true">Resume not uploaded yet</span>}
               {profile.githubUrl && <a className="action-button action-button-secondary" href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
             </div>
           </div>
