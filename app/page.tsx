@@ -53,7 +53,7 @@ export default async function Home() {
           {experiences.length > 0 && <a href="#experience">Experience</a>}
           <a href="#about">About</a>
         </nav>
-        <a href="#contact" className="header-cta">Let’s talk <MoveUpRight size={14} /></a>
+        <a href="#contact" className="header-cta action-button action-button-secondary">Let’s talk <MoveUpRight size={14} /></a>
       </header>
 
       <section className="hero container">
@@ -64,6 +64,10 @@ export default async function Home() {
         <h1 className="hero-name">{profile.name}</h1>
         <p className="hero-manifesto">Building <em>useful things</em> for the digital world.</p>
         <p className="hero-summary">{profile.intro}</p>
+        <div className="hero-actions" aria-label="Profile actions">
+          {profile.resumeUrl ? <a className="action-button action-button-primary" href="/api/resume" download>Download resume <ArrowDown size={15} /></a> : <span className="action-button action-button-disabled" aria-disabled="true">Resume not uploaded yet</span>}
+          {profile.githubUrl && <a className="action-button action-button-secondary" href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
+        </div>
         <a className="scroll-cue" href="#work"><span>SCROLL TO EXPLORE</span><ArrowDown size={14} /></a>
 
         <div className="hero-board" aria-label="Areas of engineering">
@@ -231,8 +235,8 @@ export default async function Home() {
             <p className="about-intro">{profile.about || profile.intro}</p>
             {profile.resumeSummary && <p>{profile.resumeSummary}</p>}
             <div className="about-links">
-              {profile.githubUrl && <a href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
-              {profile.resumeUrl && <a className="download-resume" href={profile.resumeUrl} target="_blank" rel="noreferrer" aria-label="Download resume PDF"><Download size={15} /> Download résumé <ArrowUpRight size={14} /></a>}
+              {profile.resumeUrl ? <a className="action-button action-button-primary" href="/api/resume" download>Download resume <ArrowDown size={15} /></a> : <span className="action-button action-button-disabled" aria-disabled="true">Resume not uploaded yet</span>}
+              {profile.githubUrl && <a className="action-button action-button-secondary" href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
             </div>
           </div>
         </div>
@@ -244,7 +248,7 @@ export default async function Home() {
           <h2>Let’s create<br /><em>something real.</em></h2>
           <div className="contact-bottom">
             <p>Good work starts with a good conversation.</p>
-            {profile.email ? <a className="contact-button" href={`mailto:${profile.email}`}>Get in touch <ArrowUpRight size={16} /></a> : profile.githubUrl ? <a className="contact-button" href={profile.githubUrl} target="_blank" rel="noreferrer">Find me on GitHub <ArrowUpRight size={16} /></a> : <span className="muted-contact">Contact details coming soon.</span>}
+            {profile.email ? <a className="contact-button action-button action-button-primary" href={`mailto:${profile.email}`}>Get in touch <ArrowUpRight size={16} /></a> : profile.githubUrl ? <a className="contact-button action-button action-button-primary" href={profile.githubUrl} target="_blank" rel="noreferrer">Find me on GitHub <ArrowUpRight size={16} /></a> : <span className="muted-contact">Contact details coming soon.</span>}
           </div>
           <footer className="site-footer">
             <a href="#home" className="footer-brand">{profile.name}<span>.</span></a>
