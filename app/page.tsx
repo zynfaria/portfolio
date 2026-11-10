@@ -52,7 +52,7 @@ export default async function Home() {
           {experiences.length > 0 && <a href="#experience">Experience</a>}
           <a href="#about">About</a>
         </nav>
-        <a href="#contact" className="header-cta">Let’s talk <MoveUpRight size={14} /></a>
+        <a href="#contact" className="header-cta action-button action-button-secondary">Let’s talk <MoveUpRight size={14} /></a>
       </header>
 
       <section className="hero container">
