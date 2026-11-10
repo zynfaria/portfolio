@@ -88,7 +88,7 @@ function Field({
   const className =
     "mt-2 w-full rounded-xl border border-[#dedfd8] bg-white px-4 py-3 text-sm text-[#171816] outline-none transition focus:border-[#171816]";
   return (
-    <label className="block text-sm font-medium">
+    <label className="block text-sm font-medium text-[#171816]">
       {label}
       {multiline ? (
         <textarea
@@ -454,7 +454,7 @@ export default function AdminEditor() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#f7f7f4]">
+    <main className="min-h-screen bg-[#f7f7f4] text-[#171816]">
       <header className="border-b border-[#dedfd8] bg-white">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between px-5 py-5 sm:px-8">
           <div>
@@ -614,7 +614,7 @@ export default function AdminEditor() {
 
       {editor && (
         <div className="fixed inset-0 z-20 overflow-y-auto bg-[#171816]/50 p-4 sm:grid sm:place-items-center" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setEditor(null); }}>
-          <section role="dialog" aria-modal="true" aria-labelledby="editor-title" className="mx-auto my-6 w-full max-w-2xl rounded-2xl bg-[#f7f7f4] p-5 sm:my-0 sm:p-8">
+          <section role="dialog" aria-modal="true" aria-labelledby="editor-title" className="mx-auto my-6 w-full max-w-2xl rounded-2xl bg-[#f7f7f4] p-5 text-[#171816] sm:my-0 sm:p-8">
             <div className="mb-6 flex items-start justify-between">
               <div>
                 <p className="eyebrow muted mb-2">{editor.id ? "EDIT ENTRY" : "NEW ENTRY"}</p>
