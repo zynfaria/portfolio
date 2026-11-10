@@ -63,6 +63,10 @@ export default async function Home() {
         <h1 className="hero-name">{profile.name}</h1>
         <p className="hero-manifesto">Building <em>useful things</em> for the digital world.</p>
         <p className="hero-summary">{profile.intro}</p>
+        <div className="hero-actions" aria-label="Profile actions">
+          {profile.resumeUrl && <a className="action-button action-button-primary" href="/api/resume" download>Download resume <ArrowDown size={15} /></a>}
+          {profile.githubUrl && <a className="action-button action-button-secondary" href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
+        </div>
         <a className="scroll-cue" href="#work"><span>SCROLL TO EXPLORE</span><ArrowDown size={14} /></a>
 
         <div className="hero-board" aria-label="Areas of engineering">
@@ -230,8 +234,8 @@ export default async function Home() {
             <p className="about-intro">{profile.about || profile.intro}</p>
             {profile.resumeSummary && <p>{profile.resumeSummary}</p>}
             <div className="about-links">
-              {profile.githubUrl && <a href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
-              {profile.resumeUrl && <a href={profile.resumeUrl} target="_blank" rel="noreferrer">Resume <ArrowUpRight size={15} /></a>}
+              {profile.resumeUrl && <a className="action-button action-button-primary" href="/api/resume" download>Download resume <ArrowDown size={15} /></a>}
+              {profile.githubUrl && <a className="action-button action-button-secondary" href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
             </div>
           </div>
         </div>
@@ -243,7 +247,7 @@ export default async function Home() {
           <h2>Let’s create<br /><em>something real.</em></h2>
           <div className="contact-bottom">
             <p>Good work starts with a good conversation.</p>
-            {profile.email ? <a className="contact-button" href={`mailto:${profile.email}`}>Get in touch <ArrowUpRight size={16} /></a> : profile.githubUrl ? <a className="contact-button" href={profile.githubUrl} target="_blank" rel="noreferrer">Find me on GitHub <ArrowUpRight size={16} /></a> : <span className="muted-contact">Contact details coming soon.</span>}
+            {profile.email ? <a className="contact-button action-button action-button-primary" href={`mailto:${profile.email}`}>Get in touch <ArrowUpRight size={16} /></a> : profile.githubUrl ? <a className="contact-button action-button action-button-primary" href={profile.githubUrl} target="_blank" rel="noreferrer">Find me on GitHub <ArrowUpRight size={16} /></a> : <span className="muted-contact">Contact details coming soon.</span>}
           </div>
           <footer className="site-footer">
             <a href="#home" className="footer-brand">{profile.name}<span>.</span></a>
