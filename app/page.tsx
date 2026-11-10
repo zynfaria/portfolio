@@ -96,7 +96,6 @@ export default async function Home() {
 
           <div className="clock-card" aria-hidden="true">
             <div className="clock-face"><i className="clock-hour" /><i className="clock-minute" /><i className="clock-second" /><b /></div>
-            <span>TIME WELL SPENT</span>
           </div>
 
           <article className="board-card board-code">
