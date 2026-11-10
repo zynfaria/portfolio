@@ -2,6 +2,7 @@ import {
   ArrowDown,
   ArrowUpRight,
   Code2,
+  Download,
   Github,
   MoveUpRight,
   ShoppingBag,
@@ -231,7 +232,7 @@ export default async function Home() {
             {profile.resumeSummary && <p>{profile.resumeSummary}</p>}
             <div className="about-links">
               {profile.githubUrl && <a href={profile.githubUrl} target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={15} /></a>}
-              {profile.resumeUrl && <a href={profile.resumeUrl} target="_blank" rel="noreferrer">Resume <ArrowUpRight size={15} /></a>}
+              {profile.resumeUrl && <a className="download-resume" href={profile.resumeUrl} target="_blank" rel="noreferrer" aria-label="Download resume PDF"><Download size={15} /> Download résumé <ArrowUpRight size={14} /></a>}
             </div>
           </div>
         </div>
