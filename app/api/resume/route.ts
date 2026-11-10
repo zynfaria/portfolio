@@ -3,7 +3,7 @@ import { getPortfolioContent } from "@/lib/portfolio-db";
 
 export const dynamic = "force-dynamic";
 
-const allowedBlobHost = //\\.public/\\.blob\\.vercel-storage\\.com$/i;
+const allowedBlobHost = /\.public\.blob\.vercel-storage\.com$/i;
 
 export async function GET() {
   try {
