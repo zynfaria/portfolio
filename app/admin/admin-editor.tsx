@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { upload } from "@vercel/blob/client";
 import {
   BriefcaseBusiness,
   FileText,
@@ -336,19 +335,34 @@ export default function AdminEditor() {
     setError("");
     setNotice("");
     try {
-      const blob = await upload(`resumes/${crypto.randomUUID()}.pdf`, file, {
-        access: "public",
-        handleUploadUrl: "/api/admin/resume",
+      const { presignedUrl } = await apiRequest<{ presignedUrl: string }>("/api/admin/resume", {
+        method: "POST",
+        body: JSON.stringify({}),
       });
+      const uploadResponse = await fetch(presignedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": "application/pdf" },
+        body: file,
+      });
+      if (!uploadResponse.ok) {
+        throw new Error(`Blob upload failed (HTTP ${uploadResponse.status}). Please try again.`);
+      }
+
+      const blob = (await uploadResponse.json()) as { url?: unknown };
+      if (typeof blob.url !== "string") {
+        throw new Error("Blob upload completed without returning a file URL.");
+      }
+      const resumeUrl = blob.url;
+
       await apiRequest("/api/admin/resume", {
         method: "PATCH",
-        body: JSON.stringify({ url: blob.url }),
+        body: JSON.stringify({ url: resumeUrl }),
       });
       setContent((current) =>
         current
           ? {
               ...current,
-              profile: { ...current.profile, resumeUrl: blob.url },
+              profile: { ...current.profile, resumeUrl },
             }
           : current,
       );
