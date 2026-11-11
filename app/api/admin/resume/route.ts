@@ -1,46 +1,51 @@
-import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
+import { issueSignedToken, presignUrl } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "node:crypto";
 import { isAdminRequest } from "@/lib/admin-auth";
 import { getPortfolioContent, saveProfile } from "@/lib/portfolio-db";
 
 const maximumResumeSize = 10 * 1024 * 1024;
-const resumePathPattern = /^resumes\/[0-9a-f-]+\.pdf$/i;
+const uploadUrlLifetime = 15 * 60 * 1000;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 export async function POST(request: NextRequest) {
-  let body: HandleUploadBody;
-  try {
-    body = (await request.json()) as HandleUploadBody;
-  } catch {
-    return NextResponse.json({ error: "Invalid upload request." }, { status: 400 });
+  if (!isAdminRequest(request)) {
+    return NextResponse.json({ error: "Authentication required." }, { status: 401 });
   }
 
   try {
-    const response = await handleUpload({
-      body,
-      request,
-      onBeforeGenerateToken: async (pathname) => {
-        if (!isAdminRequest(request)) {
-          throw new Error("Authentication required.");
-        }
-        if (!resumePathPattern.test(pathname)) {
-          throw new Error("Invalid resume file name.");
-        }
-        return {
-          allowedContentTypes: ["application/pdf"],
-          maximumSizeInBytes: maximumResumeSize,
-        };
-      },
+    // The pathname is generated on the server so the client cannot choose
+    // where files are written. OIDC signs a short-lived, single-file PUT URL.
+    const pathname = `resumes/${randomUUID()}.pdf`;
+    const validUntil = Date.now() + uploadUrlLifetime;
+    const signedToken = await issueSignedToken({
+      pathname,
+      operations: ["put"],
+      allowedContentTypes: ["application/pdf"],
+      maximumSizeInBytes: maximumResumeSize,
+      validUntil,
     });
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("Unable to authorize resume upload.", error);
+    const { presignedUrl } = await presignUrl(signedToken, {
+      pathname,
+      operation: "put",
+      access: "public",
+      allowedContentTypes: ["application/pdf"],
+      maximumSizeInBytes: maximumResumeSize,
+      validUntil,
+    });
+
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unable to upload resume PDF." },
-      { status: 400 },
+      { pathname, presignedUrl },
+      { headers: { "Cache-Control": "no-store" } },
+    );
+  } catch (error) {
+    console.error("Unable to create a resume upload URL.", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Unable to prepare resume upload." },
+      { status: 503 },
     );
   }
 }
@@ -63,7 +68,10 @@ export async function PATCH(request: NextRequest) {
   let resumeUrl: string;
   try {
     const url = new URL(body.url);
-    if (url.protocol !== "https:" && url.protocol !== "http:") {
+    if (
+      url.protocol !== "https:" ||
+      !url.hostname.endsWith(".blob.vercel-storage.com")
+    ) {
       return NextResponse.json({ error: "Invalid resume URL." }, { status: 400 });
     }
     resumeUrl = url.toString();
