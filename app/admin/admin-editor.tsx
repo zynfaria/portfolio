@@ -352,16 +352,17 @@ export default function AdminEditor() {
       if (typeof blob.url !== "string") {
         throw new Error("Blob upload completed without returning a file URL.");
       }
+      const resumeUrl = blob.url;
 
       await apiRequest("/api/admin/resume", {
         method: "PATCH",
-        body: JSON.stringify({ url: blob.url }),
+        body: JSON.stringify({ url: resumeUrl }),
       });
       setContent((current) =>
         current
           ? {
               ...current,
-              profile: { ...current.profile, resumeUrl: blob.url },
+              profile: { ...current.profile, resumeUrl },
             }
           : current,
       );
