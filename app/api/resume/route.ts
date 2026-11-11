@@ -17,20 +17,30 @@ export async function GET() {
       return NextResponse.json({ error: "The saved resume URL is invalid." }, { status: 400 });
     }
 
-    // Follow Blob's redirects to the actual file location. Using redirect:"manual"
-    // makes a valid redirect look like a failed download and returns JSON instead.
+    // Follow Blob redirects so the browser receives the actual PDF response.
     const fileResponse = await fetch(resumeUrl, { cache: "no-store" });
     if (!fileResponse.ok || !fileResponse.body) {
       console.error("Resume Blob request failed.", {
+        hostname: resumeUrl.hostname,
         status: fileResponse.status,
         statusText: fileResponse.statusText,
+        hasBody: Boolean(fileResponse.body),
       });
-      return NextResponse.json({ error: "The resume could not be retrieved." }, { status: 502 });
+      return NextResponse.json(
+        {
+          error: "The resume could not be retrieved from Vercel Blob.",
+          blobStatus: fileResponse.status,
+        },
+        { status: 502 },
+      );
     }
 
     const contentType = fileResponse.headers.get("content-type");
     if (contentType && !contentType.toLowerCase().includes("application/pdf")) {
-      console.error("Resume Blob returned an unexpected content type.", contentType);
+      console.error("Resume Blob returned an unexpected content type.", {
+        hostname: resumeUrl.hostname,
+        contentType,
+      });
       return NextResponse.json({ error: "The stored resume is not a PDF file." }, { status: 502 });
     }
 
