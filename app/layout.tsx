@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "@/app/globals.css";
+import "./globals.css";
 import { getPortfolioContent } from "@/lib/portfolio-db";
 
 export async function generateMetadata(): Promise<Metadata> {
